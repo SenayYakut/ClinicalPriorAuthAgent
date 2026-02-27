@@ -24,6 +24,7 @@ from payer_policies import (
     PAYER_POLICIES,
     SAMPLE_CASES,
 )
+from rag_engine import rag_engine
 
 load_dotenv()
 
@@ -245,30 +246,54 @@ def execute_extract_diagnosis(args: dict) -> dict:
 
 
 def execute_lookup_payer_policy(args: dict) -> dict:
-    """Look up payer policy requirements."""
+    """Look up payer policy requirements using RAG vector search."""
     payer_id = args.get("payer_id", "").lower().replace(" ", "_")
     procedure_type = args.get("procedure_type", "").lower().replace(" ", "_")
 
+    # --- RAG: Semantic search over policy documents ---
+    query = f"{procedure_type} prior authorization requirements {payer_id.replace('_', ' ')}"
+    rag_results = rag_engine.search(query, top_k=2, payer_filter=payer_id)
+
+    # Also get structured data from policy database as supplement
     payer = PAYER_POLICIES.get(payer_id)
-    if not payer:
+    structured_policy = None
+    if payer:
+        structured_policy = payer["policies"].get(procedure_type)
+
+    if not rag_results and not structured_policy:
         return {
             "status": "not_found",
-            "message": f"Payer '{payer_id}' not found. Available: {list(PAYER_POLICIES.keys())}",
+            "message": f"No policy found for '{procedure_type}' under payer '{payer_id}'.",
         }
 
-    policy = payer["policies"].get(procedure_type)
-    if not policy:
-        return {
-            "status": "not_found",
-            "message": f"No policy found for '{procedure_type}' under {payer['name']}. Available: {list(payer['policies'].keys())}",
-        }
-
-    return {
+    response = {
         "status": "success",
-        "payer_name": payer["name"],
+        "payer_id": payer_id,
         "procedure_type": procedure_type,
-        **policy,
+        "retrieval_method": "RAG_vector_search",
+        "rag_results": [
+            {
+                "document_id": r["document_id"],
+                "title": r["title"],
+                "similarity_score": r["similarity_score"],
+                "content": r["content"],
+            }
+            for r in rag_results
+        ],
     }
+
+    # Merge structured policy data if available
+    if structured_policy:
+        response["structured_policy"] = {
+            "payer_name": payer["name"] if payer else payer_id,
+            "requires_prior_auth": structured_policy.get("requires_prior_auth"),
+            "required_documentation": structured_policy.get("required_documentation", []),
+            "auto_approve_criteria": structured_policy.get("auto_approve_criteria", []),
+            "typical_turnaround": structured_policy.get("typical_turnaround"),
+            "appeal_window": structured_policy.get("appeal_window"),
+        }
+
+    return response
 
 
 def execute_draft_auth_request(args: dict) -> dict:
@@ -464,6 +489,16 @@ Please process this case by calling all required tools in sequence."""}
     }
 
 
+# --- Startup: Initialize RAG Engine ---
+@app.on_event("startup")
+async def startup_event():
+    try:
+        rag_engine.initialize()
+        print("RAG Engine initialized with vector embeddings.")
+    except Exception as e:
+        print(f"RAG Engine: Falling back to keyword search. Error: {e}")
+
+
 # --- API Endpoints ---
 @app.get("/")
 async def serve_frontend():
@@ -554,6 +589,18 @@ async def submit_review(decision: ReviewDecision):
         review_queue.remove(decision.case_id)
 
     return cases_db[decision.case_id]
+
+
+@app.get("/api/rag-search")
+async def rag_search(query: str, payer: str = None, top_k: int = 3):
+    """Direct RAG search endpoint — useful for demo."""
+    results = rag_engine.search(query, top_k=top_k, payer_filter=payer)
+    return {
+        "query": query,
+        "payer_filter": payer,
+        "results": results,
+        "retrieval_method": "vector_search" if rag_engine._initialized else "keyword_fallback",
+    }
 
 
 @app.get("/api/stats")
