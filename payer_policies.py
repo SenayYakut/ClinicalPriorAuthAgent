@@ -307,6 +307,68 @@ despite 8 weeks of conservative treatment.
     },
     {
         "id": "CASE-003",
+        "patient_name": "David Park",
+        "patient_age": 43,
+        "patient_gender": "Male",
+        "insurance_payer": "united_healthcare",
+        "member_id": "UHC-332145098",
+        "referring_physician": "Dr. Lisa Grant, MD",
+        "physician_npi": "4455667788",
+        "procedure_requested": "Total Knee Replacement",
+        "cpt_codes": ["27447"],
+        "icd10_codes": ["M17.12"],
+        "clinical_notes": """
+Patient is a 43-year-old male requesting total knee replacement for left knee pain.
+Patient reports knee pain for approximately 3 months.
+
+Conservative treatments:
+- Ibuprofen OTC for 2 weeks, some relief
+- No physical therapy attempted
+- No injections attempted
+
+Imaging: X-ray (Jan 2026) shows Kellgren-Lawrence Grade II changes with mild
+joint space narrowing. No bone-on-bone contact.
+
+BMI: 46.2 (morbidly obese)
+
+No medical clearance obtained.
+No functional assessment score documented.
+
+Patient is requesting surgery due to pain with prolonged standing at work.
+        """,
+    },
+    {
+        "id": "CASE-004",
+        "patient_name": "Susan Chen",
+        "patient_age": 38,
+        "patient_gender": "Female",
+        "insurance_payer": "aetna",
+        "member_id": "AET-998877221",
+        "referring_physician": "Dr. Robert Hayes, MD",
+        "physician_npi": "1122334455",
+        "procedure_requested": "Humira (Adalimumab)",
+        "cpt_codes": ["J0135"],
+        "icd10_codes": ["M06.9"],
+        "clinical_notes": """
+Patient is a 38-year-old female diagnosed with rheumatoid arthritis 2 months ago.
+Requesting Humira (adalimumab) for joint pain and swelling.
+
+Current medications:
+- Prednisone 10mg daily started 3 weeks ago
+- No DMARDs attempted (patient declined methotrexate due to concerns about side effects)
+
+Labs: RF positive, Anti-CCP positive, ESR 42, CRP 3.1
+DAS28 score: not documented
+
+No TB screening performed.
+No Hepatitis B/C screening performed.
+Vaccination status: unknown.
+
+Patient prefers to start biologic therapy directly without trying conventional DMARDs.
+        """,
+    },
+    {
+        "id": "CASE-005",
         "patient_name": "Robert Kim",
         "patient_age": 71,
         "patient_gender": "Male",

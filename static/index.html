@@ -3,185 +3,353 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ClearPath — Prior Authorization Agent</title>
+<title>ClearPath — Clinical Prior Authorization Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 :root {
-  --bg: #f8f9fb;
+  --bg: #f0f2f5;
   --surface: #ffffff;
-  --border: #e2e5ea;
-  --ink: #111827;
-  --ink2: #6b7280;
-  --ink3: #9ca3af;
-  --blue: #2563eb;
-  --blue-light: #eff6ff;
-  --green: #059669;
-  --green-light: #ecfdf5;
-  --amber: #d97706;
-  --amber-light: #fffbeb;
-  --red: #dc2626;
-  --red-light: #fef2f2;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+  --surface-hover: #fafbfc;
+  --border: #e1e4e8;
+  --border-light: #eef0f3;
+  --ink: #0d1117;
+  --ink2: #57606a;
+  --ink3: #8b949e;
+  --blue: #0969da;
+  --blue-dark: #0550ae;
+  --blue-light: #ddf4ff;
+  --blue-bg: #f1f8ff;
+  --green: #1a7f37;
+  --green-light: #dafbe1;
+  --green-bg: #f0fff4;
+  --amber: #bf8700;
+  --amber-light: #fff8c5;
+  --amber-bg: #fffef0;
+  --red: #cf222e;
+  --red-light: #ffebe9;
+  --red-bg: #fff5f5;
+  --purple: #8250df;
+  --purple-light: #fbefff;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--ink);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Header */
 header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 32px;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 56px;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.logo { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-.logo span { color: var(--blue); }
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-.badge {
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--blue);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-badge {
   font-size: 11px;
   font-weight: 600;
-  background: var(--blue-light);
-  color: var(--blue);
-  padding: 4px 12px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #3fb950;
+  font-weight: 500;
+}
+
+.header-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: #3fb950;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Layout */
 .layout {
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 28px 40px;
 }
 
+/* Hero banner */
+.hero {
+  background: linear-gradient(135deg, var(--blue-bg) 0%, var(--purple-light) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-text h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.hero-text p {
+  font-size: 14px;
+  color: var(--ink2);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.hero-stat-label {
+  font-size: 11px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Tabs */
 .tabs {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: 24px;
-  background: var(--surface);
-  padding: 4px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  width: fit-content;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
 }
 
 .tab {
-  padding: 8px 20px;
-  border-radius: 8px;
+  padding: 10px 18px;
   border: none;
   background: transparent;
-  color: var(--ink2);
+  color: var(--ink3);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: inherit;
 }
 
 .tab.active {
-  background: var(--blue);
-  color: white;
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
 }
 
-.tab:hover:not(.active) { background: var(--bg); }
+.tab:hover:not(.active) { color: var(--ink); }
 
+.tab-count {
+  font-size: 11px;
+  background: var(--border-light);
+  color: var(--ink3);
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.tab.active .tab-count {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
+/* Cards */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   padding: 24px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-header h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 
 .card h2 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   color: var(--ink);
 }
 
+/* Grid */
 .grid { display: grid; gap: 16px; }
 .grid-2 { grid-template-columns: 1fr 1fr; }
 .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
 
-label {
+/* Forms */
+.form-group { margin-bottom: 0; }
+
+.form-label {
   display: block;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--ink2);
   margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 input, select, textarea {
   width: 100%;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   color: var(--ink);
   background: var(--surface);
-  transition: border-color 0.15s;
+  transition: all 0.15s;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 3px rgba(9,105,218,0.12);
 }
 
-textarea { resize: vertical; min-height: 120px; }
+textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
 
+/* Buttons */
 .btn {
-  padding: 10px 24px;
+  padding: 10px 20px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid transparent;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  font-family: inherit;
 }
 
 .btn-primary {
   background: var(--blue);
   color: white;
+  border-color: var(--blue-dark);
 }
-.btn-primary:hover { background: #1d4ed8; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .btn-outline {
-  background: transparent;
-  color: var(--blue);
-  border: 1px solid var(--blue);
+  background: var(--surface);
+  color: var(--ink2);
+  border-color: var(--border);
 }
+.btn-outline:hover { background: var(--surface-hover); border-color: var(--ink3); }
 
-.btn-green { background: var(--green); color: white; }
-.btn-red { background: var(--red); color: white; }
+.btn-green { background: var(--green); color: white; border-color: #15803d; }
+.btn-green:hover { background: #15803d; }
+.btn-red { background: var(--red); color: white; border-color: #a40e26; }
+.btn-red:hover { background: #a40e26; }
 .btn-sm { padding: 6px 14px; font-size: 13px; }
 
+/* Status */
 .status-badge {
-  display: inline-block;
-  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.2px;
 }
 
 .status-processing { background: var(--blue-light); color: var(--blue); }
@@ -191,20 +359,33 @@ textarea { resize: vertical; min-height: 120px; }
 .status-denied { background: var(--red-light); color: var(--red); }
 .status-error { background: var(--red-light); color: var(--red); }
 
+/* Confidence bar */
+.confidence-bar-wrap { margin-top: 4px; }
+
+.confidence-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.confidence-label { font-size: 12px; color: var(--ink3); font-weight: 500; }
+.confidence-value { font-size: 22px; font-weight: 800; }
+
 .confidence-bar {
-  height: 8px;
+  height: 6px;
   background: #e5e7eb;
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
-  margin-top: 4px;
 }
 
 .confidence-fill {
   height: 100%;
-  border-radius: 4px;
-  transition: width 0.5s ease;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Stats */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -215,112 +396,226 @@ textarea { resize: vertical; min-height: 120px; }
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  text-align: center;
+  box-shadow: var(--shadow-sm);
 }
 
-.stat-value { font-size: 32px; font-weight: 700; color: var(--blue); }
-.stat-label { font-size: 13px; color: var(--ink2); margin-top: 4px; }
+.stat-value { font-size: 30px; font-weight: 800; color: var(--ink); letter-spacing: -0.5px; }
+.stat-label { font-size: 12px; color: var(--ink3); margin-top: 2px; font-weight: 500; }
 
+/* Tool steps */
 .tool-step {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .tool-step:last-child { border-bottom: none; }
 
 .tool-icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
   flex-shrink: 0;
-  background: var(--blue-light);
-  color: var(--blue);
   font-weight: 700;
 }
 
-.tool-name { font-weight: 600; font-size: 14px; }
-.tool-detail { font-size: 13px; color: var(--ink2); margin-top: 2px; }
+.tool-icon-1 { background: var(--blue-light); color: var(--blue); }
+.tool-icon-2 { background: var(--purple-light); color: var(--purple); }
+.tool-icon-3 { background: var(--green-light); color: var(--green); }
+.tool-icon-4 { background: var(--amber-light); color: var(--amber); }
+.tool-icon-5 { background: var(--red-light); color: var(--red); }
 
-.loading-spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
+.tool-name { font-weight: 600; font-size: 13px; }
+.tool-detail { font-size: 12px; color: var(--ink3); margin-top: 2px; line-height: 1.4; }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-
+/* Agent trace */
 .agent-trace {
-  background: #f9fafb;
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 16px;
+  border-radius: var(--radius);
+  padding: 4px 16px;
   max-height: 400px;
   overflow-y: auto;
 }
 
+/* Auth letter */
 .auth-letter {
-  background: #fffef5;
-  border: 1px solid #e5e0c8;
-  border-radius: 8px;
-  padding: 20px;
+  background: #fefdf8;
+  border: 1px solid #e8e3d0;
+  border-radius: var(--radius);
+  padding: 24px;
   font-family: 'Courier New', monospace;
-  font-size: 13px;
+  font-size: 12.5px;
   white-space: pre-wrap;
-  line-height: 1.6;
+  line-height: 1.7;
   max-height: 500px;
   overflow-y: auto;
+  color: #3d3929;
+}
+
+/* Sample cases */
+.sample-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
 }
 
 .sample-case-btn {
-  padding: 12px 16px;
+  padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
   text-align: left;
   transition: all 0.15s;
   width: 100%;
+  font-family: inherit;
+  position: relative;
 }
 
 .sample-case-btn:hover {
   border-color: var(--blue);
-  background: var(--blue-light);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
 }
 
-.sample-case-name { font-weight: 600; font-size: 14px; }
-.sample-case-detail { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+.sample-case-btn.likely-approve { border-left: 3px solid var(--green); }
+.sample-case-btn.likely-deny { border-left: 3px solid var(--red); }
+.sample-case-btn.likely-review { border-left: 3px solid var(--amber); }
 
+.sample-case-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.sample-case-detail { font-size: 12px; color: var(--ink2); line-height: 1.4; }
+
+.sample-case-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-approve { background: var(--green-light); color: var(--green); }
+.tag-deny { background: var(--red-light); color: var(--red); }
+.tag-review { background: var(--amber-light); color: var(--amber); }
+
+/* Review actions */
 .review-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 16px;
 }
 
+/* Empty state */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
   color: var(--ink3);
 }
 
-.empty-state h3 { font-size: 18px; color: var(--ink2); margin-bottom: 8px; }
+.empty-state h3 { font-size: 16px; color: var(--ink2); margin-bottom: 6px; font-weight: 600; }
 
+/* Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Result header cards */
+.result-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.result-header-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.result-case-id {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: var(--ink);
+}
+
+/* Human review banner */
+.review-banner {
+  background: var(--amber-bg);
+  border: 1px solid #e3d59c;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.review-banner h2 {
+  color: var(--amber);
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Finding list */
+.finding-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+}
+
+.finding-list li {
+  font-size: 13px;
+  padding: 3px 0;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.finding-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 9px;
+}
+
+.finding-list.strengths li::before { background: var(--green); }
+.finding-list.risks li::before { background: var(--red); }
+.finding-list.missing li::before { background: var(--amber); }
+
+/* Responsive */
 @media (max-width: 768px) {
-  .grid-2, .grid-3, .stats-grid { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .stats-grid, .result-header { grid-template-columns: 1fr; }
   .layout { padding: 16px; }
+  header { padding: 0 16px; }
+  .hero { flex-direction: column; gap: 16px; }
+  .sample-cases-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -334,33 +629,47 @@ const { useState, useEffect } = React;
 const API = '';
 
 const TOOL_LABELS = {
-  extract_diagnosis: { label: 'Extract Diagnosis', icon: '1' },
-  lookup_payer_policy: { label: 'Lookup Policy', icon: '2' },
-  draft_auth_request: { label: 'Draft Request', icon: '3' },
-  predict_approval: { label: 'Predict Approval', icon: '4' },
-  route_to_human: { label: 'Route to Human', icon: '5' },
+  extract_diagnosis: { label: 'Diagnosis Extraction', icon: '1', desc: 'ICD-10 & CPT Validation' },
+  lookup_payer_policy: { label: 'Policy Retrieval (RAG)', icon: '2', desc: 'Vector Search' },
+  draft_auth_request: { label: 'Authorization Draft', icon: '3', desc: 'Letter Generation' },
+  predict_approval: { label: 'Approval Prediction', icon: '4', desc: 'Confidence Scoring' },
+  route_to_human: { label: 'Human Routing', icon: '5', desc: 'HITL Decision' },
+};
+
+// Map sample case names to expected outcomes for UI hints
+const CASE_HINTS = {
+  'Maria Rodriguez': { tag: 'Strong Case', class: 'likely-approve', tagClass: 'tag-approve' },
+  'James Thompson': { tag: 'Borderline', class: 'likely-review', tagClass: 'tag-review' },
+  'David Park': { tag: 'Likely Denied', class: 'likely-deny', tagClass: 'tag-deny' },
+  'Susan Chen': { tag: 'Likely Denied', class: 'likely-deny', tagClass: 'tag-deny' },
+  'Robert Kim': { tag: 'Strong Case', class: 'likely-approve', tagClass: 'tag-approve' },
 };
 
 function StatusBadge({ status }) {
   const labels = {
     processing: 'Processing',
-    auto_approved: 'Auto-Approved',
+    auto_approved: 'Approved',
     approved: 'Approved',
     pending_review: 'Needs Review',
-    ready_to_submit: 'Ready to Submit',
+    ready_to_submit: 'Ready',
     denied: 'Denied',
     error: 'Error',
   };
-  return <span className={`status-badge status-${status}`}>{labels[status] || status}</span>;
+  const dots = {
+    auto_approved: '\u2713 ', approved: '\u2713 ',
+    pending_review: '\u25CB ', denied: '\u2717 ',
+  };
+  return <span className={`status-badge status-${status}`}>{dots[status] || ''}{labels[status] || status}</span>;
 }
 
 function ConfidenceBar({ score }) {
   const color = score >= 85 ? 'var(--green)' : score >= 70 ? 'var(--amber)' : 'var(--red)';
+  const label = score >= 85 ? 'High' : score >= 70 ? 'Medium' : 'Low';
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-        <span style={{ color: 'var(--ink2)' }}>Approval Confidence</span>
-        <span style={{ fontWeight: 700, color }}>{score}%</span>
+    <div className="confidence-bar-wrap">
+      <div className="confidence-bar-header">
+        <span className="confidence-label">Approval Confidence ({label})</span>
+        <span className="confidence-value" style={{ color }}>{score}%</span>
       </div>
       <div className="confidence-bar">
         <div className="confidence-fill" style={{ width: `${score}%`, background: color }} />
@@ -428,15 +737,21 @@ function SubmitCase({ onSubmit }) {
   return (
     <div>
       {samples.length > 0 && (
-        <div className="card" style={{ marginBottom: 16 }}>
-          <h2>Quick Start — Sample Cases</h2>
-          <div className="grid grid-3">
-            {samples.map((s, i) => (
-              <button key={i} className="sample-case-btn" onClick={() => loadSample(s)}>
-                <div className="sample-case-name">{s.patient_name}</div>
-                <div className="sample-case-detail">{s.procedure_requested} | {s.insurance_payer.replace(/_/g, ' ')}</div>
-              </button>
-            ))}
+        <div className="card" style={{ marginBottom: 20 }}>
+          <h2>Sample Cases</h2>
+          <p style={{ fontSize: 13, color: 'var(--ink3)', marginTop: -10, marginBottom: 14 }}>Click a case to auto-fill the form. Cases range from strong approvals to likely denials.</p>
+          <div className="sample-cases-grid">
+            {samples.map((s, i) => {
+              const hint = CASE_HINTS[s.patient_name] || { tag: 'Case', class: '', tagClass: 'tag-review' };
+              return (
+                <button key={i} className={`sample-case-btn ${hint.class}`} onClick={() => loadSample(s)}>
+                  <div className="sample-case-name">{s.patient_name}, {s.patient_age}</div>
+                  <div className="sample-case-detail">{s.procedure_requested}</div>
+                  <div className="sample-case-detail">{s.insurance_payer.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</div>
+                  <span className={`sample-case-tag ${hint.tagClass}`}>{hint.tag}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -445,16 +760,16 @@ function SubmitCase({ onSubmit }) {
         <div className="card" style={{ marginBottom: 16 }}>
           <h2>Patient Information</h2>
           <div className="grid grid-3">
-            <div>
-              <label>Patient Name</label>
+            <div className="form-group">
+              <label className="form-label">Patient Name</label>
               <input required value={form.patient_name} onChange={e => setForm({...form, patient_name: e.target.value})} />
             </div>
-            <div>
-              <label>Age</label>
+            <div className="form-group">
+              <label className="form-label">Age</label>
               <input required type="number" value={form.patient_age} onChange={e => setForm({...form, patient_age: e.target.value})} />
             </div>
-            <div>
-              <label>Gender</label>
+            <div className="form-group">
+              <label className="form-label">Gender</label>
               <select value={form.patient_gender} onChange={e => setForm({...form, patient_gender: e.target.value})}>
                 <option>Female</option><option>Male</option><option>Other</option>
               </select>
@@ -465,52 +780,52 @@ function SubmitCase({ onSubmit }) {
         <div className="card" style={{ marginBottom: 16 }}>
           <h2>Insurance & Provider</h2>
           <div className="grid grid-2">
-            <div>
-              <label>Insurance Payer</label>
+            <div className="form-group">
+              <label className="form-label">Insurance Payer</label>
               <select value={form.insurance_payer} onChange={e => setForm({...form, insurance_payer: e.target.value})}>
                 <option value="united_healthcare">United Healthcare</option>
                 <option value="aetna">Aetna</option>
                 <option value="blue_cross_blue_shield">Blue Cross Blue Shield</option>
               </select>
             </div>
-            <div>
-              <label>Member ID</label>
+            <div className="form-group">
+              <label className="form-label">Member ID</label>
               <input required value={form.member_id} onChange={e => setForm({...form, member_id: e.target.value})} />
             </div>
-            <div>
-              <label>Referring Physician</label>
+            <div className="form-group">
+              <label className="form-label">Referring Physician</label>
               <input required value={form.referring_physician} onChange={e => setForm({...form, referring_physician: e.target.value})} />
             </div>
-            <div>
-              <label>Physician NPI</label>
+            <div className="form-group">
+              <label className="form-label">Physician NPI</label>
               <input required value={form.physician_npi} onChange={e => setForm({...form, physician_npi: e.target.value})} />
             </div>
           </div>
         </div>
 
         <div className="card" style={{ marginBottom: 16 }}>
-          <h2>Procedure Details</h2>
-          <div className="grid grid-2" style={{ marginBottom: 16 }}>
-            <div>
-              <label>Procedure Requested</label>
+          <h2>Procedure & Clinical Notes</h2>
+          <div className="grid grid-3" style={{ marginBottom: 16 }}>
+            <div className="form-group">
+              <label className="form-label">Procedure Requested</label>
               <input required value={form.procedure_requested} onChange={e => setForm({...form, procedure_requested: e.target.value})} placeholder="e.g., Total Knee Replacement" />
             </div>
-            <div>
-              <label>CPT Codes (comma-separated)</label>
+            <div className="form-group">
+              <label className="form-label">CPT Codes</label>
               <input required value={form.cpt_codes} onChange={e => setForm({...form, cpt_codes: e.target.value})} placeholder="e.g., 27447" />
             </div>
+            <div className="form-group">
+              <label className="form-label">ICD-10 Codes</label>
+              <input required value={form.icd10_codes} onChange={e => setForm({...form, icd10_codes: e.target.value})} placeholder="e.g., M17.11" />
+            </div>
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <label>ICD-10 Codes (comma-separated)</label>
-            <input required value={form.icd10_codes} onChange={e => setForm({...form, icd10_codes: e.target.value})} placeholder="e.g., M17.11" />
-          </div>
-          <div>
-            <label>Clinical Notes</label>
-            <textarea required rows={10} value={form.clinical_notes} onChange={e => setForm({...form, clinical_notes: e.target.value})} placeholder="Paste clinical notes here..." />
+          <div className="form-group">
+            <label className="form-label">Clinical Notes</label>
+            <textarea required rows={10} value={form.clinical_notes} onChange={e => setForm({...form, clinical_notes: e.target.value})} placeholder="Paste clinical notes, treatment history, imaging results, and functional assessment..." />
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', padding: '14px' }}>
+        <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', padding: '14px', fontSize: '15px' }}>
           {loading ? <><span className="loading-spinner" /> Processing with AI Agent...</> : 'Submit for Prior Authorization'}
         </button>
       </form>
@@ -521,117 +836,37 @@ function SubmitCase({ onSubmit }) {
 function CaseResult({ caseData, onBack }) {
   const result = caseData.agent_result || {};
   const toolResults = result.tool_results || [];
-
   const prediction = toolResults.find(t => t.tool === 'predict_approval');
   const routing = toolResults.find(t => t.tool === 'route_to_human');
 
   return (
     <div>
-      <button className="btn btn-outline btn-sm" onClick={onBack} style={{ marginBottom: 16 }}>Back to Cases</button>
+      <button className="btn btn-outline btn-sm" onClick={onBack} style={{ marginBottom: 16 }}>&larr; Back</button>
 
-      <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-        <div className="stat-card">
-          <div className="stat-value" style={{ fontSize: 24 }}>{caseData.case_id}</div>
+      <div className="result-header">
+        <div className="result-header-card">
+          <div className="result-case-id">{caseData.case_id}</div>
           <div className="stat-label">Case ID</div>
         </div>
-        <div className="stat-card">
-          <StatusBadge status={caseData.status} />
-          <div className="stat-label" style={{ marginTop: 8 }}>Status</div>
+        <div className="result-header-card">
+          <div style={{ marginBottom: 4 }}><StatusBadge status={caseData.status} /></div>
+          <div className="stat-label">Status</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-value">{caseData.confidence_score || '—'}%</div>
-          <div className="stat-label">Approval Confidence</div>
-        </div>
-      </div>
-
-      <div className="grid grid-2" style={{ marginBottom: 16 }}>
-        <div className="card">
-          <h2>Patient Summary</h2>
-          <p><strong>{caseData.patient_name}</strong>, {caseData.patient_age}yo {caseData.patient_gender}</p>
-          <p style={{ color: 'var(--ink2)', fontSize: 13, marginTop: 4 }}>
-            {caseData.insurance_payer?.replace(/_/g, ' ')} | {caseData.member_id}
-          </p>
-          <p style={{ marginTop: 8 }}><strong>Procedure:</strong> {caseData.procedure_requested}</p>
-          <p style={{ fontSize: 13, color: 'var(--ink2)' }}>
-            CPT: {caseData.cpt_codes?.join(', ')} | ICD-10: {caseData.icd10_codes?.join(', ')}
-          </p>
-        </div>
-
-        <div className="card">
-          <h2>Approval Prediction</h2>
-          {prediction ? (
-            <>
-              <ConfidenceBar score={prediction.output.confidence_score} />
-              <div style={{ marginTop: 12 }}>
-                <div style={{ fontSize: 13 }}>
-                  <strong style={{ color: 'var(--green)' }}>Strengths:</strong>
-                  <ul style={{ marginLeft: 16, marginTop: 4 }}>
-                    {prediction.output.strengths?.map((s, i) => <li key={i}>{s}</li>)}
-                  </ul>
-                </div>
-                {prediction.output.weaknesses?.length > 0 && (
-                  <div style={{ fontSize: 13, marginTop: 8 }}>
-                    <strong style={{ color: 'var(--red)' }}>Risks:</strong>
-                    <ul style={{ marginLeft: 16, marginTop: 4 }}>
-                      {prediction.output.weaknesses?.map((w, i) => <li key={i}>{w}</li>)}
-                    </ul>
-                  </div>
-                )}
-                {prediction.output.missing_documentation?.length > 0 && (
-                  <div style={{ fontSize: 13, marginTop: 8 }}>
-                    <strong style={{ color: 'var(--amber)' }}>Missing Docs:</strong>
-                    <ul style={{ marginLeft: 16, marginTop: 4 }}>
-                      {prediction.output.missing_documentation?.map((d, i) => <li key={i}>{d}</li>)}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </>
-          ) : <p style={{ color: 'var(--ink3)' }}>No prediction available</p>}
-        </div>
-      </div>
-
-      {caseData.auth_letter && (
-        <div className="card" style={{ marginBottom: 16 }}>
-          <h2>Authorization Request Letter</h2>
-          <div className="auth-letter">{caseData.auth_letter}</div>
-        </div>
-      )}
-
-      <div className="card" style={{ marginBottom: 16 }}>
-        <h2>Agent Trace — Tool Execution</h2>
-        <div className="agent-trace">
-          {toolResults.map((tr, i) => {
-            const meta = TOOL_LABELS[tr.tool] || { label: tr.tool, icon: '?' };
-            return (
-              <div key={i} className="tool-step">
-                <div className="tool-icon">{meta.icon}</div>
-                <div style={{ flex: 1 }}>
-                  <div className="tool-name">{meta.label}</div>
-                  <div className="tool-detail">
-                    {tr.tool === 'extract_diagnosis' && `Primary: ${tr.input.primary_diagnosis}`}
-                    {tr.tool === 'lookup_payer_policy' && `Payer: ${tr.input.payer_id} | Procedure: ${tr.input.procedure_type}`}
-                    {tr.tool === 'draft_auth_request' && `Letter generated for ${tr.input.patient_name}`}
-                    {tr.tool === 'predict_approval' && `Score: ${tr.input.confidence_score}% | Risk: ${tr.input.risk_level}`}
-                    {tr.tool === 'route_to_human' && `Reason: ${tr.input.reason}`}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="result-header-card">
+          {prediction && <ConfidenceBar score={prediction.output.confidence_score} />}
+          {!prediction && <div style={{ color: 'var(--ink3)', fontSize: 14 }}>No prediction</div>}
         </div>
       </div>
 
       {routing && (
-        <div className="card" style={{ borderColor: 'var(--amber)', background: 'var(--amber-light)' }}>
+        <div className="review-banner">
           <h2>Human Review Required</h2>
-          <p><strong>Reason:</strong> {routing.output.reason}</p>
-          <p><strong>Urgency:</strong> {routing.output.urgency}</p>
-          <p><strong>Suggested Reviewer:</strong> {routing.output.suggested_reviewer}</p>
+          <p style={{ fontSize: 13 }}><strong>Reason:</strong> {routing.output.reason}</p>
+          <p style={{ fontSize: 13, marginTop: 4 }}><strong>Urgency:</strong> {routing.output.urgency} &middot; <strong>Reviewer:</strong> {routing.output.suggested_reviewer}</p>
           {routing.output.key_questions?.length > 0 && (
-            <div style={{ marginTop: 8 }}>
-              <strong>Questions for Reviewer:</strong>
-              <ul style={{ marginLeft: 16, marginTop: 4 }}>
+            <div style={{ marginTop: 10 }}>
+              <strong style={{ fontSize: 12 }}>Questions for Reviewer:</strong>
+              <ul className="finding-list missing">
                 {routing.output.key_questions.map((q, i) => <li key={i}>{q}</li>)}
               </ul>
             </div>
@@ -643,10 +878,89 @@ function CaseResult({ caseData, onBack }) {
         </div>
       )}
 
+      <div className="grid grid-2" style={{ marginBottom: 16 }}>
+        <div className="card">
+          <h2>Patient Summary</h2>
+          <p style={{ fontWeight: 600 }}>{caseData.patient_name}, {caseData.patient_age}yo {caseData.patient_gender}</p>
+          <p style={{ color: 'var(--ink2)', fontSize: 13, marginTop: 4 }}>
+            {caseData.insurance_payer?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} &middot; {caseData.member_id}
+          </p>
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-light)' }}>
+            <p style={{ fontSize: 13 }}><strong>Procedure:</strong> {caseData.procedure_requested}</p>
+            <p style={{ fontSize: 12, color: 'var(--ink3)', marginTop: 4 }}>
+              CPT: {caseData.cpt_codes?.join(', ')} &middot; ICD-10: {caseData.icd10_codes?.join(', ')}
+            </p>
+          </div>
+        </div>
+
+        <div className="card">
+          <h2>Approval Analysis</h2>
+          {prediction ? (
+            <div style={{ fontSize: 13 }}>
+              {prediction.output.strengths?.length > 0 && (
+                <div style={{ marginBottom: 10 }}>
+                  <strong style={{ color: 'var(--green)', fontSize: 12 }}>STRENGTHS</strong>
+                  <ul className="finding-list strengths">
+                    {prediction.output.strengths.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+              )}
+              {prediction.output.weaknesses?.length > 0 && (
+                <div style={{ marginBottom: 10 }}>
+                  <strong style={{ color: 'var(--red)', fontSize: 12 }}>RISKS</strong>
+                  <ul className="finding-list risks">
+                    {prediction.output.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+                  </ul>
+                </div>
+              )}
+              {prediction.output.missing_documentation?.length > 0 && (
+                <div>
+                  <strong style={{ color: 'var(--amber)', fontSize: 12 }}>MISSING DOCUMENTATION</strong>
+                  <ul className="finding-list missing">
+                    {prediction.output.missing_documentation.map((d, i) => <li key={i}>{d}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : <p style={{ color: 'var(--ink3)' }}>No analysis available</p>}
+        </div>
+      </div>
+
+      {caseData.auth_letter && (
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h2>Authorization Request Letter</h2>
+          <div className="auth-letter">{caseData.auth_letter}</div>
+        </div>
+      )}
+
+      <div className="card" style={{ marginBottom: 16 }}>
+        <h2>Agent Trace</h2>
+        <div className="agent-trace">
+          {toolResults.map((tr, i) => {
+            const meta = TOOL_LABELS[tr.tool] || { label: tr.tool, icon: '?', desc: '' };
+            return (
+              <div key={i} className="tool-step">
+                <div className={`tool-icon tool-icon-${meta.icon}`}>{meta.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <div className="tool-name">{meta.label} <span style={{ fontWeight: 400, color: 'var(--ink3)', fontSize: 11 }}>{meta.desc}</span></div>
+                  <div className="tool-detail">
+                    {tr.tool === 'extract_diagnosis' && `${tr.input.primary_diagnosis}`}
+                    {tr.tool === 'lookup_payer_policy' && `Payer: ${tr.input.payer_id?.replace(/_/g, ' ')} \u2192 ${tr.input.procedure_type?.replace(/_/g, ' ')}`}
+                    {tr.tool === 'draft_auth_request' && `Generated for ${tr.input.patient_name} \u2192 ${tr.input.payer_name}`}
+                    {tr.tool === 'predict_approval' && `Confidence: ${tr.input.confidence_score}% \u00b7 Risk: ${tr.input.risk_level} \u00b7 ${tr.input.recommendation}`}
+                    {tr.tool === 'route_to_human' && `${tr.input.reason} (${tr.input.urgency})`}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {result.agent_summary && (
-        <div className="card" style={{ marginTop: 16 }}>
+        <div className="card">
           <h2>Agent Summary</h2>
-          <div style={{ fontSize: 14, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{result.agent_summary}</div>
+          <div style={{ fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap', color: 'var(--ink2)' }}>{result.agent_summary}</div>
         </div>
       )}
     </div>
@@ -665,36 +979,36 @@ async function submitReview(caseId, decision) {
 
 function CaseList({ onSelect }) {
   const [cases, setCases] = useState([]);
-
   useEffect(() => {
     fetch(`${API}/api/cases`).then(r => r.json()).then(setCases).catch(() => {});
   }, []);
 
-  if (cases.length === 0) {
-    return (
-      <div className="empty-state">
-        <h3>No cases yet</h3>
-        <p>Submit a case to get started</p>
-      </div>
-    );
-  }
+  if (cases.length === 0) return (
+    <div className="empty-state">
+      <h3>No cases processed yet</h3>
+      <p>Submit a case from the New Case tab to get started.</p>
+    </div>
+  );
 
   return (
     <div>
       {cases.map((c, i) => (
-        <div key={i} className="card" style={{ marginBottom: 12, cursor: 'pointer' }} onClick={() => onSelect(c)}>
+        <div key={i} className="card" style={{ marginBottom: 10, cursor: 'pointer', transition: 'all 0.15s' }}
+          onClick={() => onSelect(c)}
+          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--blue)'; e.currentTarget.style.boxShadow = 'var(--shadow)'; }}
+          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <strong>{c.patient_name}</strong>
-              <span style={{ color: 'var(--ink3)', marginLeft: 12, fontSize: 13 }}>{c.case_id}</span>
+              <span style={{ fontWeight: 600 }}>{c.patient_name}</span>
+              <span style={{ color: 'var(--ink3)', marginLeft: 10, fontSize: 12, fontFamily: 'Courier New, monospace' }}>{c.case_id}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              {c.confidence_score && <span style={{ fontSize: 14, fontWeight: 600 }}>{c.confidence_score}%</span>}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              {c.confidence_score != null && <span style={{ fontSize: 15, fontWeight: 700, color: c.confidence_score >= 85 ? 'var(--green)' : c.confidence_score >= 70 ? 'var(--amber)' : 'var(--red)' }}>{c.confidence_score}%</span>}
               <StatusBadge status={c.status} />
             </div>
           </div>
-          <div style={{ fontSize: 13, color: 'var(--ink2)', marginTop: 4 }}>
-            {c.procedure_requested} | {c.insurance_payer?.replace(/_/g, ' ')} | {c.referring_physician}
+          <div style={{ fontSize: 12, color: 'var(--ink3)', marginTop: 4 }}>
+            {c.procedure_requested} &middot; {c.insurance_payer?.replace(/_/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase())} &middot; {c.referring_physician}
           </div>
         </div>
       ))}
@@ -704,19 +1018,16 @@ function CaseList({ onSelect }) {
 
 function ReviewQueue() {
   const [queue, setQueue] = useState([]);
-
   useEffect(() => {
     fetch(`${API}/api/review-queue`).then(r => r.json()).then(setQueue).catch(() => {});
   }, []);
 
-  if (queue.length === 0) {
-    return (
-      <div className="empty-state">
-        <h3>No pending reviews</h3>
-        <p>Cases with low confidence scores will appear here for human review</p>
-      </div>
-    );
-  }
+  if (queue.length === 0) return (
+    <div className="empty-state">
+      <h3>No pending reviews</h3>
+      <p>Cases with confidence below 70% will appear here for human review.</p>
+    </div>
+  );
 
   return (
     <div>
@@ -727,9 +1038,9 @@ function ReviewQueue() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <strong>{c.patient_name}</strong>
-                <span style={{ color: 'var(--ink3)', marginLeft: 12, fontSize: 13 }}>{c.case_id}</span>
+                <span style={{ color: 'var(--ink3)', marginLeft: 10, fontSize: 12, fontFamily: 'monospace' }}>{c.case_id}</span>
               </div>
-              <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--amber)' }}>{c.confidence_score}%</span>
+              <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--red)' }}>{c.confidence_score}%</span>
             </div>
             <p style={{ fontSize: 13, color: 'var(--ink2)', marginTop: 4 }}>{c.procedure_requested}</p>
             {routing && <p style={{ fontSize: 13, marginTop: 8 }}><strong>Reason:</strong> {routing.output.reason}</p>}
@@ -746,7 +1057,6 @@ function ReviewQueue() {
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
-
   useEffect(() => {
     fetch(`${API}/api/stats`).then(r => r.json()).then(setStats).catch(() => {});
   }, []);
@@ -761,7 +1071,7 @@ function Dashboard() {
           <div className="stat-label">Total Cases</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value" style={{ color: 'var(--green)' }}>{stats.statuses?.auto_approved || stats.statuses?.approved || 0}</div>
+          <div className="stat-value" style={{ color: 'var(--green)' }}>{(stats.statuses?.auto_approved || 0) + (stats.statuses?.approved || 0)}</div>
           <div className="stat-label">Approved</div>
         </div>
         <div className="stat-card">
@@ -780,28 +1090,38 @@ function Dashboard() {
 function App() {
   const [tab, setTab] = useState('submit');
   const [selectedCase, setSelectedCase] = useState(null);
+  const [stats, setStats] = useState({});
 
-  const handleSubmit = (caseData) => {
-    setSelectedCase(caseData);
-    setTab('result');
-  };
+  useEffect(() => {
+    fetch(`${API}/api/stats`).then(r => r.json()).then(setStats).catch(() => {});
+  }, [tab]);
 
   return (
     <div>
       <header>
-        <div className="logo">Clear<span>Path</span></div>
-        <div className="badge">PRIOR AUTH AGENT — AZURE AI</div>
+        <div className="logo">
+          <div className="logo-icon">CP</div>
+          ClearPath
+        </div>
+        <div className="header-right">
+          <span className="header-badge">Prior Authorization Agent</span>
+          <span className="header-status">Azure OpenAI</span>
+        </div>
       </header>
 
       <div className="layout">
         <div className="tabs">
           <button className={`tab ${tab === 'submit' ? 'active' : ''}`} onClick={() => { setTab('submit'); setSelectedCase(null); }}>New Case</button>
-          <button className={`tab ${tab === 'cases' ? 'active' : ''}`} onClick={() => { setTab('cases'); setSelectedCase(null); }}>All Cases</button>
-          <button className={`tab ${tab === 'review' ? 'active' : ''}`} onClick={() => setTab('review')}>Review Queue</button>
+          <button className={`tab ${tab === 'cases' ? 'active' : ''}`} onClick={() => { setTab('cases'); setSelectedCase(null); }}>
+            All Cases {stats.total_cases > 0 && <span className="tab-count">{stats.total_cases}</span>}
+          </button>
+          <button className={`tab ${tab === 'review' ? 'active' : ''}`} onClick={() => setTab('review')}>
+            Review Queue {stats.pending_reviews > 0 && <span className="tab-count">{stats.pending_reviews}</span>}
+          </button>
           <button className={`tab ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}>Dashboard</button>
         </div>
 
-        {tab === 'submit' && <SubmitCase onSubmit={handleSubmit} />}
+        {tab === 'submit' && <SubmitCase onSubmit={(c) => { setSelectedCase(c); setTab('result'); }} />}
         {tab === 'cases' && !selectedCase && <CaseList onSelect={(c) => { setSelectedCase(c); setTab('result'); }} />}
         {tab === 'result' && selectedCase && <CaseResult caseData={selectedCase} onBack={() => { setTab('cases'); setSelectedCase(null); }} />}
         {tab === 'review' && <ReviewQueue />}
